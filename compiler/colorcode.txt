@@ -1,0 +1,28 @@
+/*  #AEEA94 to #BF3FFF   */
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^(\#(AEEA9[4-9A-F]|AEEA[A-F][0-F]|AEE[B-F][0-F]{2}|AEF[0-F]{3}|AF[0-F]{4}|B[0-E][0-F]{4}|BF[0-3][0-9]{3}))$ {printf("Double number found - %s\n",yytext);num_count++;}
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("Range Ip address count - %d\n",num_count);
+}
