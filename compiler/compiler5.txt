@@ -1,0 +1,29 @@
+%{
+	
+int tokencount=0;
+
+%}
+
+%%
+
+[ \t]+   {printf("White spacess ignored");}
+
+\\\\.*.[\n]? {printf("A comment line\n");}
+
+[a-zA-Z]+ {printf("%S is a token",yytext);tokencount++;}
+
+[\+\-\?\*\/\^,;] {printf("%S is an operator",yytext);tokencount++;}
+
+. {printf("Unexpected character\n");}
+
+%%
+
+int main()
+
+{
+	
+yylex();
+	
+printf("Number of tokens is %d\n",tokencount);
+
+}
