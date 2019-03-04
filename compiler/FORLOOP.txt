@@ -1,0 +1,30 @@
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^((for( |\n)*\((.|\n)*\;(.|\n)*\;(.|\n)*\)( |\n)*\{((.|\n)*\;)*( |\n)*\})|(for( |\n)*\((.|\n)*\;(.|\n)*\;(.|\n)*\)( |\n)*[^\;\{]*\;)|(for( |\n)*\((.|\n)*\;(.|\n)*\;(.|\n)*\))
+
+)$ {printf("FOR BLOCK found - %s\n",yytext);num_count++;}
+
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("FOR BLOCK count - %d\n",num_count);
+}
