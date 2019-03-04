@@ -1,0 +1,28 @@
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^([aeiou][a-zA-Z0-9]{1,3}[aeiou])$ {printf("Accept 3 to 5 character words that start and end a vowel found - %s\n",yytext);num_count++;}
+
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("Accept 3 to 5 character words that start and end a vowel count - %d\n",num_count);
+}
