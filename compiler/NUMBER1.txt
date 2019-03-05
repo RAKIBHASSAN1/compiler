@@ -23,5 +23,5 @@ int main()
 	yylex();
 
 	
-	printf("Range Ip address count - %d\n",num_count);
+	printf("Range number count - %d\n",num_count);
 }
