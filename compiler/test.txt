@@ -1,0 +1,28 @@
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^(.*(test).*)$ {printf("Accept any line of sentence that has the word test is it  found - %s\n",yytext);num_count++;}
+
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("Accept any line of sentence that has the word test is it count - %d\n",num_count);
+}

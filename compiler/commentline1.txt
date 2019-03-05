@@ -1,0 +1,28 @@
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^(\/{2}.*)$ {printf("comment line  found - %s\n",yytext);num_count++;}
+
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("comment line count - %d\n",num_count);
+}
