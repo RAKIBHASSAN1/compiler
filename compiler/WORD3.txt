@@ -1,0 +1,28 @@
+
+%{
+int num_count=0;
+%}
+%%
+[ \t\n]+ { }
+^([aeiou]{2}[a-zA-Z0-9]*[^aeiou])$ {printf("Accept any words that start with two vowel and end a consolent  found - %s\n",yytext);num_count++;}
+
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("code.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("Accept any words that start with two vowel and end a consolent count - %d\n",num_count);
+}
