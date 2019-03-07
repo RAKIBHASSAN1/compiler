@@ -1,0 +1,26 @@
+%{
+int word_count=0;
+%}
+%%
+[ \t\n]+ { }
+^([a-zA-Z0-9]{2,4}[aeiouAEIOU])$ {printf("WORD found - %s\n",yytext);word_count++;}
+. {}
+%%
+int main()
+{
+	FILE *file;
+	file=fopen("setA_2_B.c","r");
+	
+	if(!file)
+	{
+		printf("Cannot open file");
+		exit(1);
+	}
+	else
+		yyin=file;
+
+	yylex();
+
+	
+	printf("WORD count - %d\n",word_count);
+}

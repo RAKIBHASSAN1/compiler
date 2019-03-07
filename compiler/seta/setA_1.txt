@@ -1,0 +1,35 @@
+%{
+int headerCounter=0;
+int globalVar=0;
+int funcDec=0;
+int funcDef=0;
+%}
+%%
+[ \t\n] {}
+((\#include)\<[a-z]+\.h\>) {printf("Header file found:\n %s\n",yytext);headerCounter++;}
+((\#define)\ [a-z]+\ [0-9]*) {printf("Global Variable file found:\n %s\n",yytext);globalVar++;}
+(((int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+\(((int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+)(\,(int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+)*\)[ \n]*\;) {printf("Function Declared found:\n %s\n",yytext);funcDec++;}
+(((int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+\(((int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+)(\,(int|float|double|long[ ]long|long|string)[ ]*[a-zA-Z]+)*\)[ \n]*\{([ \n]*[a-zA-Z]*[ ]*[a-zA-Z]*[ ]*\;)*[ \n]*\}) {printf("Function definitions found:\n %s\n",yytext);funcDef++;}
+. {}
+%%
+int main()
+{ 
+	FILE *file;
+	file=fopen("1.c","r");
+	
+	if(!file)
+	{
+		printf("cann't open file");
+		exit(1);
+	}
+	else
+	{
+		yyin=file;
+	}
+	yylex();
+	
+	printf("No. of hearde files: %d\n",headerCounter);
+	printf("No. of global variables: %d\n",globalVar);
+	printf("No. of function declarations: %d\n",funcDec);
+	printf("No. of function definitions: %d\n",funcDef);
+}
