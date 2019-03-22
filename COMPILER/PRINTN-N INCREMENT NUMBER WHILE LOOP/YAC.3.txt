@@ -1,0 +1,46 @@
+%{
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+void yyerror(const char *s){
+	fprintf(stderr,"%s\n",s);
+}
+extern FILE *yyin;
+int yylex();
+int count_start;
+int count_end;
+int var=0;
+int inc;
+%}
+%token NUMBER TOKEN PRINT WHILE
+%%
+while_statement : while_cond statement { }
+	      ;
+while_cond : token '(' expression ')' { int count = 0;}
+	 ;
+expression: TOKEN '=' NUMBER ':' NUMBER ':' NUMBER ':' NUMBER {count_start=$3;inc=$5;count_end=$7; var=$1;}
+	;
+statement: command TOKEN { if(var==$2){
+		while(var=count_start;var=var+inc;var<=count_end){
+			printf("%d ",var);		
+		}
+	} }
+	 ;
+command: PRINT { }
+       ;
+token: WHILE { }
+     ;
+%%
+int main(){
+	FILE *file;
+	file = fopen("code.c", "r") ;
+	if (!file) {
+		printf("couldnot open file");
+		exit (1);	
+	}
+	else {
+		yyin = file;
+	}
+	yyparse();
+}
+
